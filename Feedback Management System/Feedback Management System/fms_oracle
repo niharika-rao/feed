@@ -1,0 +1,68 @@
+
+select * from FEEDBACK_MASTER;
+select * from employee_master;
+select * from faculty_skill;
+select * from course_master;
+select * from training_program;
+
+delete from feedback_master where participant_id=10400;
+alter table EMPLOYEE_MASTER add unique(employee_id);
+
+
+insert into faculty_skill values(10035,'Web services, Java, Big Data');
+delete from faculty_skill where faculty_id=10035;
+
+insert into course_master values(COURSEID_SEQ.nextval, 'RDMBS', 180);
+insert into EMPLOYEE_MASTER values (10040,'Pallavi','pal','Faculty');
+
+insert into training_program values(TRAINING_CODE_SEQ.nextval, 120, 10040, 
+TO_DATE('12/01/2018','DD/MM/YYYY'), TO_DATE('11/07/2018','DD/MM/YYYY'));
+
+insert into faculty_skill values(10040,'RDBMS, Big Data, Machine Learning');
+
+insert into EMPLOYEE_MASTER values (10200,'Mira','mir','Coordinator');
+
+select  tp.faculty_code,fs.skill_set, cm.course_name, tp.course_code
+from training_program tp, course_master cm, faculty_skill fs
+where tp.course_code=cm.course_id and tp.faculty_code=fs.faculty_id;
+
+select * from faculty_maintenance;
+
+select * from course_master;
+
+
+select tp.training_code,tp.course_code,cm.course_name,tp.faculty_code,tp.start_date,tp.end_date
+from training_program tp, course_master cm
+where tp.course_code=cm.course_id;
+
+
+
+drop sequence TRAINING_CODE_SEQ;
+drop sequence COURSEID_SEQ;
+
+
+==========================================================================================
+
+
+insert into EMPLOYEE_MASTER values (10000,'Niharika','nih','Admin');
+insert into EMPLOYEE_MASTER values (10400,'Prashant','pra','Participant');
+insert into EMPLOYEE_MASTER values (10035,'Manjunath','man','Faculty');
+
+insert into course_master values(COURSEID_SEQ.nextval, 'HTML CSS JAVASCRIPT', 120);
+
+insert into training_program values(TRAINING_CODE_SEQ.nextval, 100, 10035, 
+TO_DATE('12/01/2018','DD/MM/YYYY'), TO_DATE('12/05/2018','DD/MM/YYYY'));
+
+insert into faculty_skill values(10035,'Web services, Java, Big Data');
+insert into EMPLOYEE_MASTER values (10200,'Mira','mir','Coordinator');
+
+
+select * from training_program;
+insert into training_program values(TRAINING_CODE_SEQ.nextval, 100, 10035, 
+TO_DATE('12/01/2018','DD/MM/YYYY'), TO_DATE('12/05/2018','DD/MM/YYYY'));
+
+select employee_id from employee where role='Participant';
+
+select tp.training_code, cm.course_id, cm.course_name from training_program tp, course_master cm where tp.course_code=cm.course_id;
+
+select * from training_participant_enroll;

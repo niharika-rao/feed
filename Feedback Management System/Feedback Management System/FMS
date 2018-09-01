@@ -1,0 +1,118 @@
+CREATE TABLE EMPLOYEE_MASTER
+(
+Employee_ID number(5) primary key,
+EmployeeName varchar(50),
+Password varchar(20),
+Role varchar(20)
+);
+
+CREATE TABLE COURSE_MASTER
+(
+Course_ID number(5) primary key,
+Course_Name varchar(50),
+No_of_Days number(5)
+);
+
+----------------------------------
+CREATE SEQUENCE COURSEID_SEQ
+START WITH 100
+INCREMENT BY 1;
+----------------------------------
+
+CREATE TABLE TRAINING_PROGRAM
+(
+Training_Code number(5) primary key,
+Course_Code number(5),
+Faculty_Code number(5),
+Start_Date DATE,
+End_Date DATE,
+constraint tp_fk
+FOREIGN KEY (Course_Code) REFERENCES COURSE_MASTER(Course_ID) on delete cascade,
+FOREIGN KEY (Faculty_Code) REFERENCES EMPLOYEE_MASTER(Employee_ID) on delete cascade
+);
+
+------------------------------------
+CREATE SEQUENCE TRAINING_CODE_SEQ
+START WITH 1
+INCREMENT BY 1;
+------------------------------------
+
+CREATE TABLE FACULTY_SKILL
+(
+Faculty_ID number(5),
+Skill_Set varchar(200),
+constraint fs_fk
+FOREIGN KEY (Faculty_ID) REFERENCES EMPLOYEE_MASTER (Employee_ID) on delete cascade
+);
+
+CREATE TABLE TRAINING_PARTICIPANT_ENROLL
+( 
+Training_Code number(5),
+Participant_ID number(5),
+constraint tpe_fk
+FOREIGN KEY (Training_Code) REFERENCES TRAINING_PROGRAM (Training_Code) on delete cascade,
+FOREIGN KEY (Participant_ID) REFERENCES EMPLOYEE_MASTER (Employee_ID) on delete cascade
+);
+
+CREATE TABLE FEEDBACK_MASTER
+(
+Training_Code number(5),
+Participant_ID number(5),
+FB_Presentation_Communication number(1),
+FB_Clarify_Doubts number(1),
+FB_Time_Management number(1),
+FB_Handout number(1),
+FB_HW_SW_Network number(1),
+Comments varchar(200),
+Suggestions varchar(200),
+entry_date DATE,
+constraint fm_fk 
+FOREIGN KEY (Training_Code) REFERENCES TRAINING_PROGRAM (Training_Code) on delete cascade,
+FOREIGN KEY (Participant_ID) REFERENCES EMPLOYEE_MASTER(Employee_ID) on delete cascade
+);
+
+----------------------------------------
+
+drop table FEEDBACK_MASTER;
+drop table TRAINING_PARTICIPANT_ENROLL;
+drop table FACULTY_SKILL;
+drop table TRAINING_PROGRAM;
+drop table COURSE_MASTER;
+drop table EMPLOYEE_MASTER;
+
+-------------------------------------------
+
+insert into EMPLOYEE_MASTER values (10000,'Niharika','nih','Admin');
+//insert into EMPLOYEE_MASTER values (10400,'Prashant','pra','Participant');
+insert into EMPLOYEE_MASTER values (10035,'Manjunath','man','Faculty');
+
+insert into EMPLOYEE_MASTER values (10200,'Mira','mir','Coordinator');
+//insert into EMPLOYEE_MASTER values (10040,'Pallavi','pal','Faculty');
+
+insert into course_master values(COURSEID_SEQ.nextval, 'HTML CSS JAVASCRIPT', 120);
+//insert into course_master values(COURSEID_SEQ.nextval, 'RDMBS', 180);
+
+insert into training_program values(TRAINING_CODE_SEQ.nextval, 100, 10035, 
+TO_DATE('12/01/2018','DD/MM/YYYY'), TO_DATE('12/05/2018','DD/MM/YYYY'));
+//insert into training_program values(TRAINING_CODE_SEQ.nextval, 120, 10040, 
+TO_DATE('12/01/2018','DD/MM/YYYY'), TO_DATE('11/07/2018','DD/MM/YYYY'));
+
+insert into faculty_skill values(10035,'Web services, Java, Big Data');
+//insert into faculty_skill values(10040,'RDBMS, Big Data, Machine Learning');
+
+insert into training_participant_enroll values(2,10400);
+
+
+---------------------------------------------------------------------------------
+select * from FEEDBACK_MASTER;
+select * from employee_master;
+select * from faculty_skill;
+select * from course_master;
+select * from training_program;
+----------------------------------------------------------------------------------
+
+select  tp.faculty_code,fs.skill_set, cm.course_name, tp.course_code
+from training_program tp, course_master cm, faculty_skill fs
+where tp.course_code=cm.course_id and tp.faculty_code=fs.faculty_id;
+
+------------------------------------------------------------------------------------
