@@ -1,0 +1,71 @@
+CREATE TABLE EMPLOYEE_MASTER
+(
+Employee_ID number(5) primary key,
+EmployeeName varchar(50),
+Password varchar(20),
+Role varchar(20)
+);
+
+CREATE TABLE COURSE_MASTER
+(
+Course_ID number(5) primary key,
+Course_Name varchar(50),
+No_of_Days number(5)
+);
+
+----------------------------------
+CREATE SEQUENCE COURSEID_SEQ
+START WITH 100
+INCREMENT BY 1;
+----------------------------------
+
+CREATE TABLE TRAINING_PROGRAM
+(
+Training_Code number(5) primary key,
+Course_Code number(5),
+Faculty_Code number(5),
+Start_Date DATE,
+End_Date DATE,
+constraint tp_fk
+FOREIGN KEY (Course_Code) REFERENCES COURSE_MASTER(Course_ID) on delete cascade,
+FOREIGN KEY (Faculty_Code) REFERENCES EMPLOYEE_MASTER(Employee_ID) on delete cascade
+);
+
+------------------------------------
+CREATE SEQUENCE TRAINING_CODE_SEQ
+START WITH 1
+INCREMENT BY 1;
+------------------------------------
+
+CREATE TABLE FACULTY_SKILL
+(
+Faculty_ID number(5),
+Skill_Set varchar(200),
+constraint fs_fk
+FOREIGN KEY (Faculty_ID) REFERENCES EMPLOYEE_MASTER (Employee_ID) on delete cascade
+);
+
+CREATE TABLE TRAINING_PARTICIPANT_ENROLL
+( 
+Training_Code number(5),
+Participant_ID number(5),
+constraint tpe_fk
+FOREIGN KEY (Training_Code) REFERENCES TRAINING_PROGRAM (Training_Code) on delete cascade,
+FOREIGN KEY (Participant_ID) REFERENCES EMPLOYEE_MASTER (Employee_ID) on delete cascade
+);
+
+CREATE TABLE FEEDBACK_MASTER
+(
+Training_Code number(5),
+Participant_ID number(5),
+FB_Presentation_Communication number(1),
+FB_Clarify_Doubts number(1),
+FB_Time_Management number(1),
+FB_Handout number(1),
+FB_HW_SW_Network number(1),
+Comments varchar(200),
+Suggestions varchar(200),
+entry_date DATE,
+FOREIGN KEY (Training_Code) REFERENCES TRAINING_PROGRAM (Training_Code) on delete cascade,
+FOREIGN KEY (Participant_ID) REFERENCES EMPLOYEE_MASTER(Employee_ID) on delete cascade
+);
